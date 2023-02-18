@@ -1,3 +1,10 @@
+import { AboutIllustration } from '@/components/images/about-ilustration';
+import { AppIllustration } from '@/components/images/app-ilustration';
+import { HomeIllustration } from '@/components/images/home-ilustration';
+import { SecurityIllustration } from '@/components/images/security-ilustration';
+import { ServiceIllustration1 } from '@/components/images/services1-ilustration';
+import { ServiceIllustration2 } from '@/components/images/services2-ilustration';
+import { ServiceIllustration3 } from '@/components/images/services3-ilustration';
 import Head from 'next/head'
 import { BiToggleLeft } from 'react-icons/bi';
 
@@ -138,7 +145,7 @@ themeButton.addEventListener('click', () => {
             {/*=============== HOME ===============*/}
             <section className="home section" id="home">
                 <div className="home__container container grid">
-                  <img src="./images/home-ilustration.svg" alt="" />
+                  <HomeIllustration/>
                   <div className="home__data">
                       <h1 className="home__title">Order Products <br/> Faster Easier</h1>
                       <p className="home__description">Order your favorite foods at any time and we will deliver them right to where you are.</p>
@@ -158,8 +165,7 @@ themeButton.addEventListener('click', () => {
                             to your home or to the place where you are, with the best quality of delivery.
                         </p>
                     </div>
-
-                    <img src="/images/about-ilustration.svg" alt="" />
+                    <AboutIllustration/>
                 </div>
             </section>
 
@@ -172,8 +178,7 @@ themeButton.addEventListener('click', () => {
                             so that you are protected from any disease. Watch the video of how the delivery is made.
                         </p>
                     </div>
-                    <img src='./images/about-ilustration.svg'/>
-                   
+                    <SecurityIllustration/>                   
                 </div>
             </section>
 
@@ -183,7 +188,7 @@ themeButton.addEventListener('click', () => {
                 <div className="services__container grid">
                     <div className="services__data">
                         <h3 className="services__subtitle">Payment Done</h3>
-                        <img src="./images/services1-ilustration.svg" alt="" />
+                        <ServiceIllustration1 />
                         <p className="services__description">Pay with a Visa or PayPal card and without much ado.</p>
                         <div>
                             <a href="#" className="button button-link">Learn More</a>
@@ -192,7 +197,7 @@ themeButton.addEventListener('click', () => {
 
                     <div className="services__data">
                         <h3 className="services__subtitle">Find Your Product</h3>
-                        <img src="./images/services2-ilustration.svg" alt="" />
+                        <ServiceIllustration2 />
                         <p className="services__description">We offer sale of products through the Internet.</p>
                         <div>
                             <a href="#" className="button button-link">Learn More</a>
@@ -201,7 +206,7 @@ themeButton.addEventListener('click', () => {
 
                     <div className="services__data">
                         <h3 className="services__subtitle">Product Received</h3>
-                        <img src="./images/services1-ilustration.svg" alt="" />
+                        <ServiceIllustration3 />
                         <p className="services__description">In our app you can see the delay time of your order.</p>
                         <div>
                             <a href="#" className="button button-link">Learn More</a>
@@ -227,7 +232,7 @@ themeButton.addEventListener('click', () => {
                         </div>
                     </div>
 
-                    <img src="./images/app-ilustration.svg" alt="" />
+                    <AppIllustration/>
                 </div>
             </section>
 
