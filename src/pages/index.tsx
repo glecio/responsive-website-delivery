@@ -1,8 +1,5 @@
 import Head from 'next/head'
-
-//import Image from 'next/image'
-//import { Inter } from '@next/font/google'
-//import styles from '@/styles/Home.module.css'
+import { BiToggleLeft } from 'react-icons/bi';
 
 //const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
@@ -126,8 +123,7 @@ themeButton.addEventListener('click', () => {
                       <li className="nav__item">
                           <a href="#contact" className="nav__link">Contact us</a>
                       </li>
-
-                      <i className='bx bx-toggle-left change-theme' id="theme-button"></i>
+                      <BiToggleLeft id='nav-toggle' className='change-theme' />
                   </ul>
               </div>
 
