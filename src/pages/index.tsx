@@ -6,103 +6,85 @@ import { ServiceIllustration1 } from '@/components/images/services1-ilustration'
 import { ServiceIllustration2 } from '@/components/images/services2-ilustration';
 import { ServiceIllustration3 } from '@/components/images/services3-ilustration';
 import Head from 'next/head'
-import { BiToggleLeft } from 'react-icons/bi';
+import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
+import { BiGridAlt } from 'react-icons/bi';
+import { BiUpArrowAlt } from 'react-icons/bi';
+import React, { useState, useEffect } from 'react';
 
 //const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
+  let [darkTheme, setDarkTheme] = useState<Boolean>()
+  useEffect(() => {
+    /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
+    const sections = document.querySelectorAll <HTMLElement>('section[id]')
+    function scrollActive(){
+      const scrollY = window.pageYOffset
 
-  function handleShowMenu(){
-  /*=============== SHOW MENU ===============*/
-  const showMenu = (toggleId, navId) => {
-    const toggle = document.getElementById(toggleId),
-    nav = document.getElementById(navId)
-    
-    // Validate that variables exist
-    if(toggle && nav){
-        toggle.addEventListener('click', ()=>{
-            // We add the show-menu class to the div tag with the nav__menu class
-            nav.classList.toggle('show-menu')
-        })
+      sections.forEach(current =>{
+          const sectionHeight = current.offsetHeight,
+                sectionTop = current.offsetTop - 50,
+                sectionId = current.getAttribute('id')
+
+          if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+              document.querySelector('.nav__menu a[href*=' + sectionId + ']')!.classList.add('active-link')!
+          }else{
+              document.querySelector('.nav__menu a[href*=' + sectionId + ']')!.classList.remove('active-link')!
+          }
+      }) 
     }
-  }
-  showMenu('nav-toggle','nav-menu')
-  
-/*=============== REMOVE MENU MOBILE ===============*/
-const navLink = document.querySelectorAll('.nav__link')
+    window.addEventListener('scroll', scrollActive)
 
-function linkAction(){
-  const navMenu = document.getElementById('nav-menu')
-  // When we click on each nav__link, we remove the show-menu class
-  navMenu.classList.remove('show-menu')
-}
-navLink.forEach(n => n.addEventListener('click', linkAction))
+    /*=============== CHANGE BACKGROUND HEADER ===============*/
+    function scrollHeader(){
+      const nav = document.getElementById('header')!
+      // When the scroll is greater than 80 viewport height, add the scroll-header class to the header tag
+      if(window.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
+    }
+    window.addEventListener('scroll', scrollHeader)
 
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const sections = document.querySelectorAll('section[id]')
+          
+    /*=============== SHOW SCROLL UP ===============*/
+    function scrollUp(){
+      const scrollUp = document.getElementById('scroll-up')!;
+      // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
+      if(window.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
+    }
+    window.addEventListener('scroll', scrollUp)
+   
+   /*=============== GET CURRENT THEME FROM LOCAL STORAGE ===============*/
+    const currentTheme = localStorage.getItem('selected-theme')
+    if(currentTheme === 'dark'){
+      handleChangeTheme('dark-button')
+    } else {
+      handleChangeTheme('light-button')
+    }
+  },[])
 
-function scrollActive(){
-  const scrollY = window.pageYOffset
 
-  sections.forEach(current =>{
-      const sectionHeight = current.offsetHeight,
-            sectionTop = current.offsetTop - 50,
-            sectionId = current.getAttribute('id')
 
-      if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-          document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
-      }else{
-          document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
+
+  function handleOpenMenu(navId: string){
+      let nav = document.getElementById(navId)
+      // Validate that variables exist
+      if(nav){
+        // We add the show-menu class to the div tag with the nav__menu class
+        nav.classList.toggle('show-menu')
       }
-  })
-}
-window.addEventListener('scroll', scrollActive)
-
-/*=============== CHANGE BACKGROUND HEADER ===============*/
-function scrollHeader(){
-  const nav = document.getElementById('header')
-  // When the scroll is greater than 80 viewport height, add the scroll-header class to the header tag
-  if(this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
-}
-window.addEventListener('scroll', scrollHeader)
-
-/*=============== SHOW SCROLL UP ===============*/
-function scrollUp(){
-  const scrollUp = document.getElementById('scroll-up');
-  // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
-  if(this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
-}
-window.addEventListener('scroll', scrollUp)
-
-/*=============== DARK LIGHT THEME ===============*/
-const themeButton = document.getElementById('theme-button')
-const darkTheme = 'dark-theme'
-const iconTheme = 'bx-toggle-right'
-
-// Previously selected topic (if user selected)
-const selectedTheme = localStorage.getItem('selected-theme')
-const selectedIcon = localStorage.getItem('selected-icon')
-
-// We obtain the current theme that the interface has by validating the dark-theme class
-const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'bx-toggle-left' : 'bx-toggle-right'
-
-// We validate if the user previously chose a topic
-if (selectedTheme) {
-// If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
-document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
-themeButton.classList[selectedIcon === 'bx-toggle-left' ? 'add' : 'remove'](iconTheme)
-}
-
-// Activate / deactivate the theme manually with the button
-themeButton.addEventListener('click', () => {
-  // Add or remove the dark / icon theme
-  document.body.classList.toggle(darkTheme)
-  themeButton.classList.toggle(iconTheme)
-  // We save the theme and the current icon that the user chose
-  localStorage.setItem('selected-theme', getCurrentTheme())
-  localStorage.setItem('selected-icon', getCurrentIcon())
-})
   }
+
+  function handleChangeTheme(e) {
+    if(e=='dark-button') {
+      setDarkTheme(false)
+      localStorage.setItem('selected-theme', 'light')
+      document.body.classList.remove('dark-theme')
+    }else{
+      setDarkTheme(true)
+      localStorage.setItem('selected-theme', 'dark')
+      document.body.classList.add('dark-theme')
+      }
+  }
+
+  
   return (
     <>
       <Head>
@@ -130,12 +112,20 @@ themeButton.addEventListener('click', () => {
                       <li className="nav__item">
                           <a href="#contact" className="nav__link">Contact us</a>
                       </li>
-                      <BiToggleLeft id='nav-toggle' className='change-theme' />
+                      {
+                       darkTheme ? (
+                         <BiToggleRight id='dark-button' className='change-theme' onClick={(e) => handleChangeTheme(e.target.id)}/>
+                       ):(                         
+                          <BiToggleLeft id='light-button' className='change-theme' onClick={(e) => handleChangeTheme(e.target.id)}/>
+                        )
+                      }
+                
+                      
                   </ul>
               </div>
 
-              <div className="nav__toggle" id="nav-toggle">
-                  <i className='bx bx-grid-alt'></i>
+              <div className="nav__toggle" id="nav-toggle" >
+                   <BiGridAlt id='theme-button' className='change-theme' onClick={() => handleOpenMenu('nav-menu')}/>
               </div>
 
               <a href="#" className="button button__header">Order Now!</a>
@@ -151,7 +141,7 @@ themeButton.addEventListener('click', () => {
                       <p className="home__description">Order your favorite foods at any time and we will deliver them right to where you are.</p>
 
                       <a href="#" className="button">Get Started</a>
-
+                      {console.log(darkTheme)}
                   </div>   
                 </div>
             </section>
@@ -257,58 +247,12 @@ themeButton.addEventListener('click', () => {
                 </div>
             </section>
         </main>
-        {/*=============== FOOTER ===============*/}
-        <footer className="footer section">
-            <div className="footer__container container grid">
-                <div className="footer__content">
-                    <a href="#" className="footer__logo">Delivery</a>
-                    <p className="footer__description">Order Products Faster <br/> Easier</p>
-                </div>
-
-                <div className="footer__content">
-                    <h3 className="footer__title">Our Services</h3>
-                    <ul className="footer__links">
-                        <li><a href="#" className="footer__link">Pricing </a></li>
-                        <li><a href="#" className="footer__link">Discounts</a></li>
-                        <li><a href="#" className="footer__link">Report a bug</a></li>
-                        <li><a href="#" className="footer__link">Terms of Service</a></li>
-                    </ul>
-                </div>
-
-                <div className="footer__content">
-                    <h3 className="footer__title">Our Company</h3>
-                    <ul className="footer__links">
-                        <li><a href="#" className="footer__link">Blog</a></li>
-                        <li><a href="#" className="footer__link">Our mision</a></li>
-                        <li><a href="#" className="footer__link">Get in touch</a></li>
-                    </ul>
-                </div>
-
-                <div className="footer__content">
-                    <h3 className="footer__title">Community</h3>
-                    <ul className="footer__links">
-                        <li><a href="#" className="footer__link">Support</a></li>
-                        <li><a href="#" className="footer__link">Questions</a></li>
-                        <li><a href="#" className="footer__link">Customer help</a></li>
-                    </ul>
-                </div>
-
-                <div className="footer__social">
-                    <a href="#" className="footer__social-link"><i className='bx bxl-facebook-circle '></i></a>
-                    <a href="#" className="footer__social-link"><i className='bx bxl-twitter'></i></a>
-                    <a href="#" className="footer__social-link"><i className='bx bxl-instagram-alt'></i></a>
-                </div>
-            </div>
-
-            <p className="footer__copy">&#169; Bedimcode. All right reserved</p>
-        </footer>
         {/*=============== SCROLL UP ===============*/}
         <a href="#" className="scrollup" id="scroll-up">
-            <i className='bx bx-up-arrow-alt scrollup__icon'>top</i>
+          <BiUpArrowAlt className='scrollup__icon'/>
         </a>
 
-        {/*}=============== MAIN JS ===============*/}
-        <script src="assets/js/main.js"></script>
+        {/*=============== MAIN JS ===============*/}
 
     </>
   )
