@@ -244,5 +244,5 @@ export const ServiceIllustration2 = () => (
                             <rect width="129" height="94" fill="white"/>
                             </clipPath>
                             </defs>
-                        </svg>
+    </svg>
 )
